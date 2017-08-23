@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Blackjack</title>
+		<link rel="stylesheet" href="/css/styles.css">	
+	</head>
+	<body>
+		<h1>dealer</h1>
+		{{#dealerCards}}
+			{{ visualRepresentation }} {{ suit }}
+		{{/dealerCards}}
+		<h1>player</h1>
+		{{#playerCards}}
+			{{ visualRepresentation }} {{ suit }}
+		{{/playerCards}}
+		<p>Current Bet: {{ currentBet }}</p>
+		<form method="post" action="/blackjack/hit">
+			<button>Hit</button>
+		</form>
+		<form method="post" action="/blackjack/stand">
+			<button>Stand</button>
+		</form>
+		{{#numberOfCardsRemaining}}
+			<p>Number of cards left: {{ numberOfCardsRemaining }}</p>
+		{{/numberOfCardsRemaining}}	
+	</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Blackjack!</title>
+		<link rel="stylesheet" href="/css/styles.css">
+	</head>
+	<body>
+		<h1>{{ messageToPlayer }}</h1>
+		<div>
+		Wallet Amount: $ {{ walletAmount }}
+		</div>
+		<br>
+		Dealer Cards:
+		<br>
+		{{ #dealerCards }}
+			<div class="card-class">{{ . }}</div>
+		{{ /dealerCards }}
+		<br>
+		<div>Dealer Best Hand: {{ dealerBestHand }}</div>
+		<hr>
+		Your Cards:
+		<br>
+		{{ #playerCards }}
+			<div class="card-class">{{ . }}</div>
+		{{ /playerCards }} 
+		<br>
+		<div>Your Best Hand: {{ playerBestHand }}</div>
+		{{ #showPlayAgainButton }}
+			<form method="post" action="/blackjack/game/bet">
+				<input autofocus type="number" name="playerBet" value="" required>
+				<button>play again!</button>
+			</form>
+		{{ /showPlayAgainButton }}
+		<form method="post" action="/blackjack">
+			<button>end game</button>
+		</form>
+		<br>
+  		<div>Deck has {{ remainingCards }} cards remaining</div>
+	</body>
+</html>
