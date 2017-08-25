@@ -23,6 +23,7 @@ public class BlackjackController {
 	boolean showDealerCard;
 	boolean showPlayerButtons;
 	boolean showPlayAgainstButton;
+	String messageToPlayer;
 
 
 
@@ -148,6 +149,7 @@ public class BlackjackController {
 	@PostMapping("stand")
 	public String stand() {
 		return "redirect:/blackjack/blackjackgame/deal-to-dealer";
+		
 
 	}
 
@@ -164,33 +166,37 @@ public class BlackjackController {
 
 			dealerBestScore = dealer.getBestScore();
 		}
-		return "redirect:/blackjack/blackjackgame/end-hand";
+		return "redirect:/blackjack/game/end-hand";
 	}
 
-	@GetMapping("/blackjackgame/end-hand")
+	@GetMapping("/game/end-hand")
 	public String endHand(Model model) { 
 	
-		String messageToPlayer = "";
-		
+				
 		if (dealer.isBust()) {
             player1.payout(currentBet * 2);
+            messageToPlayer = "The dealer busted!";
             
         } else if (player1.hasBlackjack() && !dealer.hasBlackjack()) {
         	player1.payout(currentBet + currentBet / 2);
+        	messageToPlayer = "You win with Blackjack!";
         	
         } else if (player1.getBestScore() == dealer.getBestScore()) {
         	player1.payout(currentBet);
+        	messageToPlayer = "This is a push";
         	
         } else if (player1.getBestScore() > dealer.getBestScore()) {
         	player1.payout(currentBet * 2);
         	
+        } else {
+        	messageToPlayer = "You bust! Better luck next time!";      	
+        	
         }
         
-		
 	
 		currentBet = 0;
  		model.addAttribute("messageToPlayer", messageToPlayer);
- 		model.addAttribute("totalAmount", player1.getTotalAmount()); // Get the real name of this method
+ 		model.addAttribute("totalAmount", player1.getTotalAmount()); 
  		model.addAttribute("playerCards", player1.getCards());
  		model.addAttribute("dealerCards", dealer.getCards());
 // 		model.addAttribute("showPlayAgainButton", showPlayAgainButton); // Don't delete this. Just ignore until other stuff works.
@@ -208,11 +214,11 @@ public class BlackjackController {
 		model.addAttribute("totalAmount", player1.getTotalAmount()); // Get the real name of this method
 		model.addAttribute("playerCards", player1.getCards());
 		model.addAttribute("dealerCards", dealer.getCards());
-		model.addAttribute("messageToPlayer", "bust!  You have exceeded the allowable limit for this game");
+		model.addAttribute("messageToPlayer", messageToPlayer);
 //		model.addAttribute("showPlayAgainButton", showPlayAgainButton); // Don't delete this. Just ignore until other stuff works.
 		player1.clearHand();
 		dealer.clearHand();
-		return "redirect:/blackjackgame/end-hand";
+		return "blackjack/end-hand";
 	}
 
 	@GetMapping("/game/no-money")
